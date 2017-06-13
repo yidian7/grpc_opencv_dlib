@@ -1,5 +1,4 @@
-FROM fishead/node-opencv && \
-      grpc/cxx
+FROM fishead/node-opencv
 LABEL dlib Yin jiao<yinjiao@jcble.com>
 
 WORKDIR /usr/local/src
@@ -18,3 +17,23 @@ RUN cd /usr/local/src  &&\
     cd ../ && \
     wget http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2 && \
     bunzip2 shape_predictor_68_face_landmarks.dat.bz2
+    
+RUN apt-get update && apt-get install -y \
+  build-essential autoconf libtool \
+  git \
+  pkg-config \
+  && apt-get clean
+
+ENV GRPC_RELEASE_TAG v1.0.0
+
+RUN git clone -b ${GRPC_RELEASE_TAG} https://github.com/grpc/grpc /var/local/git/grpc
+
+# install grpc
+RUN cd /var/local/git/grpc && \
+    git submodule update --init && \
+    make && \
+    make install && make clean
+
+#install protoc
+RUN cd /var/local/git/grpc/third_party/protobuf && \
+    make && make install && make clean
