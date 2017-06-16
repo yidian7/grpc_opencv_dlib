@@ -33,8 +33,6 @@ RUN apt-get update &&\
     apt-get install -y --no-install-recommends python libboost-dev cmake
 RUN cd /usr/local/src  &&\
     git clone  --depth 1 https://github.com/davisking/dlib.git  && \
-    git clone  --depth 1 https://github.com/yidian7/some_file.git && \
-    mv some_file/interpolation_abstract.h dlib/dlib/image_transforms/ && \
     cd dlib/examples && \
     mkdir build && \
     cd build && \
